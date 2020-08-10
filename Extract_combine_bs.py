@@ -12,7 +12,7 @@ import matplotlib as plt
 
 def met_data(month, year):
 
-    with open("Data/{}/{}.html".format(year, month), "rb") as html_file:
+    with open("html_data/{}/{}.html".format(year, month), "rb") as html_file:
         soup = BeautifulSoup(html_file, "lxml")
 
     # Pulling and creating Columns of the table

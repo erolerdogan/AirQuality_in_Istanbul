@@ -23,10 +23,10 @@ def retrieve_html():
             data = requests.get(url)
             data_utf = data.text.encode('utf=8')
 
-            if not os.path.exists("Data/{}".format(year)):
-                os.makedirs(("Data/{}".format(year)))
+            if not os.path.exists("html_data/{}".format(year)):
+                os.makedirs(("html_data/{}".format(year)))
 
-            with open("Data/{}/{}.html".format(year, month), "wb") as output:
+            with open("html_data/{}/{}.html".format(year, month), "wb") as output:
                 output.write(data_utf)
 
         sys.stdout.flush()

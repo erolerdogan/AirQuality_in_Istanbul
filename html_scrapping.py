@@ -10,13 +10,11 @@ import sklearn
 # ------------------- Data Collection Process -------------------
 # Retrieving html from specific url
 
-
 def retrieve_html():
     for year in range(2013, 2020):
         for month in range(1, 13):
-            if month < 9:
+            if month < 10:
                 url = 'https://en.tutiempo.net/climate/0{}-{}/ws-170600.html'.format(month, year)
-
             else:
                 url = 'https://en.tutiempo.net/climate/{}-{}/ws-170600.html'.format(month, year)
 

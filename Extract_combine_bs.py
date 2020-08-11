@@ -1,37 +1,31 @@
 # Using BeautifulSoup to combine tables
 
-
-import requests
 import sys
 import os
 from bs4 import BeautifulSoup
-
 import pandas as pd
 import numpy as np
-import matplotlib as plt
 
-def met_data(month, year):
+
+def meta_data(month, year):
 
     with open("html_data/{}/{}.html".format(year, month), "rb") as html_file:
         soup = BeautifulSoup(html_file, "lxml")
 
-    # Pulling and creating Columns of the table
-    table = soup.find("table", {"class":"medias mensuales numspan"})
-    columns = [column.text for column in table.tr]
+    table = soup.find("table", {"class": "medias mensuales numspan"})
 
     # Pulling and creating whole data into the list
     try:
+
+        # Pulling and creating Columns of the table
+        columns = [column.text for column in table.tr]
+
         texts = []
         for table in soup.find_all("table", {"class": "medias mensuales numspan"}):
             for tbody in table:
                 for tr in tbody:
                     texts.append(tr.text)
 
-    except Exception as e:
-        print("error")
-
-
-    try:
         numberOf_rows = round(len(texts) / len(columns))
         data = []
         for i in range(numberOf_rows):
@@ -41,14 +35,27 @@ def met_data(month, year):
             data.append(x)
             del texts[:len(columns)]
 
+        # Drop the unnecessary rows
+
+        data.pop(0)
+        data.pop(-1)
+
+        df = pd.DataFrame(data, columns=columns)
+        df.set_index("Day", inplace=True)
+        df.replace(["", "-", " ", "o"], np.nan, inplace=True)
+
+        return df.to_csv("data/{}-{}.csv".format(month, year))
+
     except Exception as e:
-        print("ok")
-
-    data.pop(0)
-    df = pd.DataFrame(data, columns=columns)
-    df.set_index("Day", inplace=True)
+        print("{}-{} is not created. ".format(month, year))
 
 
-    print(df.head(10))
+if __name__ == "__main__":
+    if not os.path.exists("data"):
+        os.makedirs("data")
 
-met_data(5, 2015)
+    for year in range(2013, 2020):
+        for month in range(1, 13):
+            meta_data(month, year)
+
+

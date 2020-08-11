@@ -1,10 +1,10 @@
 # Using BeautifulSoup to combine tables
 
-import sys
 import os
 from bs4 import BeautifulSoup
 import pandas as pd
 import numpy as np
+import time
 
 
 def meta_data(month, year):
@@ -36,7 +36,6 @@ def meta_data(month, year):
             del texts[:len(columns)]
 
         # Drop the unnecessary rows
-
         data.pop(0)
         data.pop(-1)
 
@@ -47,10 +46,16 @@ def meta_data(month, year):
         return df.to_csv("data/{}-{}.csv".format(month, year))
 
     except Exception as e:
-        print("{}-{} is not created. ".format(month, year))
+        print("{}-{} is not created. And there error is: {} ".format(month, year, e))
 
+
+def combined_dataframe(month, year):
+
+    return pd.read_csv("data/{}-{}.csv".format(month, year))
 
 if __name__ == "__main__":
+
+    start = time.process_time()
     if not os.path.exists("data"):
         os.makedirs("data")
 
@@ -58,4 +63,10 @@ if __name__ == "__main__":
         for month in range(1, 13):
             meta_data(month, year)
 
+    new_df = pd.DataFrame(None)
+    for year in range(2013, 2020):
+        for month in range(1, 13):
+            new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
+    new_df.to_csv("combined_data.csv")
+    print("Process Time: ", time.process_time() - start)

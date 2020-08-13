@@ -72,6 +72,7 @@ if __name__ == "__main__":
             meta_data(month, year)
 
     new_df = pd.DataFrame(None)
+
     for year in range(2014, 2020):
         for month in range(1, 13):
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)

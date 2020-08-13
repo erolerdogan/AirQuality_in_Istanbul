@@ -10,28 +10,38 @@ import bs4
 # Retrieving html from specific url
 
 def retrieve_html():
-    for year in range(2013, 2020):
-        for month in range(1, 13):
-            if month < 10:
+
+    for year in range(2013, 2021):
+        if year < 2020:
+            for month in range(1, 13):
+                if month < 10:
+                    url = 'https://en.tutiempo.net/climate/0{}-{}/ws-170600.html'.format(month, year)
+                else:
+                    url = 'https://en.tutiempo.net/climate/{}-{}/ws-170600.html'.format(month, year)
+
+                data = requests.get(url)
+                data_utf = data.text.encode('utf=8')
+
+                if not os.path.exists("html_data/{}".format(year)):
+                    os.makedirs(("html_data/{}".format(year)))
+
+                with open("html_data/{}/{}.html".format(year, month), "wb") as output:
+                    output.write(data_utf)
+
+        elif year == 2020:
+            for month in range(1, 8):     # Because on 2020, we only have data till August
                 url = 'https://en.tutiempo.net/climate/0{}-{}/ws-170600.html'.format(month, year)
-            else:
-                url = 'https://en.tutiempo.net/climate/{}-{}/ws-170600.html'.format(month, year)
 
-            data = requests.get(url)
-            data_utf = data.text.encode('utf=8')
+                data = requests.get(url)
+                data_utf = data.text.encode('utf=8')
 
-    # Because on 2020, we only have data till August
-    for year in range(2020, 2021):
-        for month in range(1, 8):
-            url = 'https://en.tutiempo.net/climate/0{}-{}/ws-170600.html'.format(month, year)
+                if not os.path.exists("html_data/{}".format(year)):
+                    os.makedirs(("html_data/{}".format(year)))
 
-            if not os.path.exists("html_data/{}".format(year)):
-                os.makedirs(("html_data/{}".format(year)))
+                with open("html_data/{}/{}.html".format(year, month), "wb") as output:
+                    output.write(data_utf)
 
-            with open("html_data/{}/{}.html".format(year, month), "wb") as output:
-                output.write(data_utf)
-
-    sys.stdout.flush()
+        sys.stdout.flush()
 
 
 if __name__ == "__main__":

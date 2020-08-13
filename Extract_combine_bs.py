@@ -41,6 +41,10 @@ def meta_data(month, year):
 
         df = pd.DataFrame(data, columns=columns)
         df.set_index("Day", inplace=True)
+        df["Date"] = None
+        for i in range(len(df)):
+            df["Date"][i] = str(year) + "-" + str(month)
+
         df.replace(["", "-", " ", "o"], np.nan, inplace=True)
 
         return df.to_csv("data/{}-{}.csv".format(month, year))
@@ -59,13 +63,21 @@ if __name__ == "__main__":
     if not os.path.exists("data"):
         os.makedirs("data")
 
-    for year in range(2013, 2020):
+    for year in range(2014, 2020):
         for month in range(1, 13):
             meta_data(month, year)
 
+    for year in [2020]:
+        for month in range(1, 8):
+            meta_data(month, year)
+
     new_df = pd.DataFrame(None)
-    for year in range(2013, 2020):
+    for year in range(2014, 2020):
         for month in range(1, 13):
+            new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
+
+    for year in [2020]:
+        for month in range(1, 8):
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
     new_df.to_csv("combined_data.csv")

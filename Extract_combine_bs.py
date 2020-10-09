@@ -68,7 +68,7 @@ if __name__ == "__main__":
             meta_data(month, year)
 
     for year in [2020]:
-        for month in range(1, 8):
+        for month in range(1, 10):
             meta_data(month, year)
 
     new_df = pd.DataFrame(None)
@@ -78,7 +78,7 @@ if __name__ == "__main__":
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
     for year in [2020]:
-        for month in range(1, 8):
+        for month in range(1, 10):
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
     new_df.to_csv("combined_data.csv")

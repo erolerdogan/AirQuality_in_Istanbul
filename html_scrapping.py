@@ -29,7 +29,7 @@ def retrieve_html():
                     output.write(data_utf)
 
         elif year == 2020:
-            for month in range(1, 8):     # Because on 2020, we only have data till August
+            for month in range(1, 10):     # Because on 2020, we only have data till October 10/09/2020
                 url = 'https://en.tutiempo.net/climate/0{}-{}/ws-170600.html'.format(month, year)
 
                 data = requests.get(url)

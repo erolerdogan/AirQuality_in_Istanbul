@@ -17,29 +17,30 @@ def meta_data(month, year):
     # Pulling and creating whole data into the list
     try:
 
-        # Pulling and creating Columns of the table
-        columns = [column.text for column in table.tr]
+        # Pulling and creating rows of the table
+        rows = [row.text for row in table.tr]
 
         texts = []
         for table in soup.find_all("table", {"class": "medias mensuales numspan"}):
             for tbody in table:
                 for tr in tbody:
-                    texts.append(tr.text)
+                    te = tr.get_text()
+                    texts.append(te)
 
-        numberOf_rows = round(len(texts) / len(columns))
+        numberOf_rows = round(len(texts) / len(rows))
         data = []
         for i in range(numberOf_rows):
             x = []
-            for j in range(len(columns)):
+            for j in range(len(rows)):
                 x.append(texts[j])
             data.append(x)
-            del texts[:len(columns)]
+            del texts[:len(rows)]
 
         # Drop the unnecessary rows
         data.pop(0)
         data.pop(-1)
 
-        df = pd.DataFrame(data, columns=columns)
+        df = pd.DataFrame(data, columns=rows)
         df.set_index("Day", inplace=True)
         df["Date"] = None
         for i in range(len(df)):
@@ -81,5 +82,5 @@ if __name__ == "__main__":
         for month in range(1, 10):
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
-    new_df.to_csv("combined_data.csv")
+    new_df.to_csv("combined_data_deneme.csv")
     print("Process Time: ", time.process_time() - start)

@@ -29,8 +29,8 @@ def meta_data(month, year):
             texts = [td.text for td in row.select('td') if td.text.strip()]
             data.append(texts[:11])
 
-        # Creating Dataframe.
-        df = pd.DataFrame(data[:-2], columns=cols[:11])
+        # Creating Dataframe
+        df = pd.DataFrame(data[1:-2], columns=cols[:11])
         df.set_index("Day", inplace=True)
         df["Date"] = None
         for i in range(len(df)):
@@ -73,5 +73,5 @@ if __name__ == "__main__":
         for month in range(1, 10):
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
-    new_df.to_csv("combined_data_deneme.csv")
+    new_df.to_csv("combined_data.csv")
     print("Process Time: ", time.process_time() - start)

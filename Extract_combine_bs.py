@@ -73,5 +73,5 @@ if __name__ == "__main__":
         for month in range(1, 10):
             new_df = pd.concat([new_df, combined_dataframe(month, year)], ignore_index=True)
 
-    new_df.to_csv("combined_data_deneme.csv")
+    new_df.to_csv("combined_data.csv")
     print("Process Time: ", time.process_time() - start)

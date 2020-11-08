@@ -29,8 +29,8 @@ def meta_data(month, year):
             texts = [td.text for td in row.select('td') if td.text.strip()]
             data.append(texts[:11])
 
-        # Creating Dataframe.
-        df = pd.DataFrame(data[:-2], columns=cols[:11])
+        # Creating Dataframe
+        df = pd.DataFrame(data[1:-2], columns=cols[:11])
         df.set_index("Day", inplace=True)
         df["Date"] = None
         for i in range(len(df)):
